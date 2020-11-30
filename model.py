@@ -8,10 +8,9 @@ import torchvision.transforms as transforms
 import torch.optim as optim
 import torch.nn.functional as F
 import einops
-from copy import deepcopy
 from processData import Vocabulary
 import math
-import einops
+from PIL import Image
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 import torch_optimizer as opt
@@ -25,12 +24,8 @@ from nltk.translate.bleu_score import corpus_bleu
 import os
 import math
 import pickle
-import skimage.transform
-from scipy.misc import imread, imresize
-import matplotlib.image as mpimg
 # from torchtext.vocab import Vectors, GloVe
-import imageio
-from scipy import misc
+import loader import DataLoader
 
 
 # part of this code has been borrowed from https://github.com/ajamjoom/Image-Captions/blob/master/main_notebook.ipynb
