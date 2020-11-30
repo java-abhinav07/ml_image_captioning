@@ -142,8 +142,9 @@ class Captioning(pl.LighningModule):
         self.lr = lr
         self.optimizer = optimizer
 
-    def forward(self, image, cap, caplens):
+    def forward(self, image):
         features = self.encoder(image)
+        cap, caplens = #TODODDODODODOO
         pred, captions, dec_len, alphas, embeddings = self.decoder(features, cap, caplens)
         scores = pack_padded_sequence(pred, dec_len, batch_first=True)[0]
 
@@ -351,21 +352,26 @@ if __name__== "__main__":
     earlystopping_callback = EarlyStopping(monitor="val/loss", patience=5)
 
     captioning = Captioning((vocab_size, use_bert, lr, "Adam", use_cos=True))
+    train = True
 
-    trainer = pl.Trainer(
+    if train:
+        trainer = pl.Trainer(
         gpus=2,
         callbacks=[earlystopping_callback],
         gradient_clip_val = grad_clip,
         # resume_from_checkpoint=''
         # auto_scale_batch_size="binsearch",
         # auto_lr_find=True,
-    )  # , fast_dev_run=True)
+        )  # , fast_dev_run=True)
+        trainer.fit(captioning, train_dataloader=train_data_loader, val_dataloaders=val_data_loader)
 
-    trainer.fit(captioning, train_dataloader=train_data_loader, val_dataloaders=val_data_loader)
+    else:
+        PATH = ""
+        captioning_model = captioning.load_from_checkpoint(PATH)
+        captioning_model.freeze()
+        im_path = ""
 
-                            
+        image = Image.open(im_path)
+        out = captioning_model(image)
 
-    
-
-
-
+        print(out)
