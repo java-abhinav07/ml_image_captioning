@@ -1,40 +1,47 @@
-'''
-This code is mainly taken from the following github repositories:
-1.  parksunwoo/show_attend_and_tell_pytorch
-Link: https://github.com/parksunwoo/show_attend_and_tell_pytorch/blob/master/prepro.py
-2. sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning
-Link: https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning
-This script loads the COCO dataset in batches to be used for training/testing
-''' 
-
 import os
 import nltk
 import torch
 import torch.utils.data as data
 from PIL import Image
-from pycocotools.coco import COCO
 from torchvision import transforms
 
 class DataLoader(data.Dataset):
-    def __init__(self, root, json, vocab, transform=None):
+    def __init__(self, root, vocab, train, transform):
 
         self.root = root
-        self.coco = COCO(json)
-        self.ids = list(self.coco.anns.keys())
         self.vocab = vocab
+        self.train = train
+        # self.ids = len(vocab)
+        with open(os.path.join(self.root, "captions.txt")) as f:
+            l = f.readlines()
+            self.ids = l
         self.transform = transform
 
-    def __getitem__(self, index):
-        coco = self.coco
-        vocab = self.vocab
-        ann_id = self.ids[index]
-        caption = coco.anns[ann_id]['caption']
-        img_id = coco.anns[ann_id]['image_id']
-        path = coco.loadImgs(img_id)[0]['file_name']
 
-        image = Image.open(os.path.join(self.root, path)).convert('RGB')
-        if self.transform is not None:
-            image = self.transform(image)
+    def __getitem__(self, index):
+        vocab = self.vocab
+        if self.train:
+            with open(os.path.join(self.root, "captions.txt")) as f:
+                l = f.readlines()
+                try:
+                    tup=l[index]
+                except:
+                    tup = l[0]
+                image_path, caption = tup.split(",")[0], tup.split(",")[1]
+
+            image = Image.open(os.path.join(self.root, "Images", image_path)).convert('RGB')
+        else:
+            with open(os.path.join(self.root, "captions_val.txt")) as f:
+                l = f.readlines()
+                try:
+                    tup=l[index]
+                except:
+                    tup = l[0]
+                image_path, caption = tup.split(",")[0], tup.split(",")[1]
+
+            image = Image.open(os.path.join(self.root, "Images", image_path)).convert('RGB')
+        # image = image.resize((244, 244))
+        image = self.transform(image)
 
         tokens = nltk.tokenize.word_tokenize(str(caption).lower())
         caption = []
@@ -45,7 +52,7 @@ class DataLoader(data.Dataset):
         return image, target
 
     def __len__(self):
-        return len(self.ids)
+        return 6000
 
 def collate_fn(data):
     data.sort(key=lambda  x: len(x[1]), reverse=True)
@@ -59,3 +66,18 @@ def collate_fn(data):
         end = lengths[i]
         targets[i, :end] = cap[:end]
     return images, targets, lengths
+
+
+def get_loader(root, vocab, batch_size, transform, train):
+
+    # rasnet transformation/normalization
+    transform = transform
+
+    flickr = DataLoader(root=root, vocab=vocab, train=train, transform=transform)
+
+    data_loader = torch.utils.data.DataLoader(dataset=flickr,
+                                              batch_size=batch_size,
+                                              shuffle=True,
+                                              num_workers=5,
+                                              collate_fn=collate_fn)
+    return data_loader
