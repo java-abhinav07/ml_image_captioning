@@ -3,7 +3,7 @@ import torch.nn as nn
 import numpy as np
 import os
 import pickle
-from data_loader import get_loader 
+from loader import get_loader
 from vocab_builder import Vocabulary
 from model import EncoderCNN, DecoderRNN, DecoderAttention
 from torch.nn.utils.rnn import pack_padded_sequence
@@ -16,19 +16,19 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 def main(model_path, crop_size, vocab_path, root, batch_size, embed_size, use_attention, hidden_size, num_layers, use_semantic_loss, lr, num_epochs):
     if not os.path.exists(model_path):
         os.system("mkdir model_path")
-    
+
 
     # preprocess the image
-    transform = transforms.Compose([[ 
+    transform = transforms.Compose([
         transforms.RandomCrop(crop_size),
-        transforms.RandomHorizontalFlip(), 
-        transforms.ToTensor(), 
-        transforms.Normalize((0.485, 0.456, 0.406), 
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize((0.485, 0.456, 0.406),
                              (0.229, 0.224, 0.225))])
-    
+
     with open(vocab_path, 'rb') as file:
         vocab = pickle.load(file)
-    
+
     data_loader = get_loader(root, vocab, batch_size, transform, "True")
 
     encoder = EncoderCNN(embed_size).to(device)
@@ -42,7 +42,7 @@ def main(model_path, crop_size, vocab_path, root, batch_size, embed_size, use_at
     else:
         criterion1 = nn.CrossEntropyLoss()
         criterion2 = nn.CosineSimilarity()
-    
+
     params = list(decoder.parameters()) + list(encoder.linear.parameters()) + list(encoder.bn.parameters())
     optimizer = torch.optim.Adam(params, lr=lr)
 
@@ -62,10 +62,10 @@ def main(model_path, crop_size, vocab_path, root, batch_size, embed_size, use_at
                 mapped_features, mapped_targets = projection_function(features, targets)
                 loss_semantic = criterion2(mapped_features, mapped_targets)
                 loss = loss_bce + 0.5(1 - loss_semantic)
-                
+
             except:
                 loss = criterion(outputs, targets)
-            
+
             decoder.zero_grad()
             encoder.zero_grad()
             loss.backward()
@@ -73,8 +73,8 @@ def main(model_path, crop_size, vocab_path, root, batch_size, embed_size, use_at
 
             if i % 10 == 0:
                 print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Perplexity: {:5.4f}'
-                      .format(epoch, num_epochs, i, total_step, loss.item(), np.exp(loss.item()))) 
-                
+                      .format(epoch, num_epochs, i, steps, loss.item(), np.exp(loss.item())))
+
             # Save the model checkpoints
             if (i+1) % 200 == 0:
                 torch.save(decoder.state_dict(), os.path.join(
@@ -85,7 +85,7 @@ def main(model_path, crop_size, vocab_path, root, batch_size, embed_size, use_at
 
 #######ARGS##############
 model_path = "./models"
-crop_size = 224
+crop_size = 100
 vocab_path = "./data/vocab.pkl"
 root = "./data/flickr8k"
 batch_size = 12
@@ -100,8 +100,3 @@ lr = 0.001
 
 
 main(model_path, crop_size, vocab_path, root, batch_size, embed_size, use_attention, hidden_size, num_layers, use_semantic_loss, lr, num_epochs)
-            
-
-
-    
-

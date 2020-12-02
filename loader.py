@@ -52,7 +52,7 @@ class DataLoader(data.Dataset):
         return image, target
 
     def __len__(self):
-        return 6000
+        return 7000
 
 def collate_fn(data):
     data.sort(key=lambda  x: len(x[1]), reverse=True)
