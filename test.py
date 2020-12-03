@@ -90,19 +90,19 @@ if __name__ == "__main__":
     parser.add_argument(
         "--encoder_path",
         type=str,
-        default="./models_baseline/encoder-10-400.ckpt",
+        default="./models_baseline/encoder-20-938.ckpt",
         help="path for trained encoder",
     )
     parser.add_argument(
         "--decoder_path",
         type=str,
-        default="./models_baseline/decoder-10-400.ckpt",
+        default="./models_baseline/decoder-20-938.ckpt",
         help="path for trained decoder",
     )
     parser.add_argument(
         "--vocab_path",
         type=str,
-        default="data/vocab.pkl",
+        default="data/flickr30k_images/vocab.pkl",
         help="path for vocabulary wrapper",
     )
 
