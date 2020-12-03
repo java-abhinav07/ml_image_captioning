@@ -31,4 +31,4 @@ Flickr8k can be downloaded from:  https://www.kaggle.com/hsankesara/flickr-image
 
 ### Acknowledgments
 ---
-Much of this code has been taken from https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning
+Much of this code has been taken from https://github.com/yunjey/pytorch-tutorial/blob/master/tutorials/
