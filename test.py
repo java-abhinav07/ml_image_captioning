@@ -90,7 +90,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--encoder_path",
         type=str,
-        default="./model/encoder-20-938.ckpt",
+        default="./models/encoder-20-938.ckpt",
         help="path for trained encoder",
     )
     parser.add_argument(
