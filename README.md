@@ -17,7 +17,9 @@ Image Captioning is a widely studied research problem with a wide variety of app
 
 ### Test
 ---
-1. Having trained the model you may test it using<br>
+1. Put weights in a folder called model<br>
+https://drive.google.com/drive/folders/1egnfg6L_nv7awjd_FAEUueW2Q73huF82?usp=sharing<br>
+2. Having trained the model you may test it using<br>
 ``` python3 test.py```<br>
 
 
