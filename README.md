@@ -28,8 +28,8 @@ https://drive.google.com/drive/folders/1egnfg6L_nv7awjd_FAEUueW2Q73huF82?usp=sha
 
 ### Dataset
 ---
-Currently the data loader has been configured for Flickr8K dataset only. Feel free to use the COCO data preparation scripts to train with a larger dataset<br>
-Flickr8k can be downloaded from:  https://www.kaggle.com/hsankesara/flickr-image-dataset
+Currently the data loader has been configured for Flickr8K/30K dataset only. Feel free to use the COCO data preparation scripts to train with a larger dataset<br>
+Flickr8k can be downloaded from:  https://www.kaggle.com/hsankesara/flickr-image-dataset<br>
 Flickr30k can be downloaded from: https://www.kaggle.com/hsankesara/flickr-image-dataset
 
 ### Acknowledgments
