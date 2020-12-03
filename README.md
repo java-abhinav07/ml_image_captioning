@@ -12,7 +12,9 @@ Image Captioning is a widely studied research problem with a wide variety of app
 
 ### Train
 ---
-1. Configure the parameters in ```train.py``` (WIP: argparser needs to be added)<br>
+1. Download dataset<br>
+2. If using flick30k parse the captions from csv to txt file using parse30k.py
+3. Configure the parameters in ```train.py``` (WIP: argparser needs to be added)<br>
 ```python3 train.py```<br>
 
 ### Test
@@ -28,6 +30,7 @@ https://drive.google.com/drive/folders/1egnfg6L_nv7awjd_FAEUueW2Q73huF82?usp=sha
 ---
 Currently the data loader has been configured for Flickr8K dataset only. Feel free to use the COCO data preparation scripts to train with a larger dataset<br>
 Flickr8k can be downloaded from:  https://www.kaggle.com/hsankesara/flickr-image-dataset
+Flickr30k can be downloaded from: https://www.kaggle.com/hsankesara/flickr-image-dataset
 
 ### Acknowledgments
 ---
