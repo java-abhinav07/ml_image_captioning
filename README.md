@@ -19,6 +19,7 @@ Image Captioning is a widely studied research problem with a wide variety of app
 ---
 1. Put weights in a folder called model<br>
 https://drive.google.com/drive/folders/1egnfg6L_nv7awjd_FAEUueW2Q73huF82?usp=sharing<br>
+(Note that it is best to train the model on a larger dataset instead of using the dummy weights)<br>
 2. Having trained the model you may test it using<br>
 ``` python3 test.py```<br>
 
