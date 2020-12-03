@@ -56,7 +56,7 @@ class DataLoader(data.Dataset):
         return image, target
 
     def __len__(self):
-        return 7000
+        return 30000
 
 
 def collate_fn(data):

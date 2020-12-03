@@ -13,11 +13,6 @@ from torchvision import transforms
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-
-def projection_function(x, y):
-    pass
-
-
 def main(
     model_path,
     crop_size,
@@ -112,7 +107,7 @@ def main(
                 )
 
             # Save the model checkpoints
-            if (i + 1) % 1000 == 0:
+            if (i + 1) % 938 == 0:
                 torch.save(
                     decoder.state_dict(),
                     os.path.join(
@@ -130,15 +125,15 @@ def main(
 #######ARGS##############
 model_path = "./models"
 crop_size = 100
-vocab_path = "./data/vocab.pkl"
-root = "./data/flickr8k"
-batch_size = 12
+vocab_path = "./data/flickr30k_images/vocab.pkl"
+root = "./data/flickr30k_images"
+batch_size = 32
 embed_size = 256
 use_attention = False
 hidden_size = 512
 num_layers = 1
-use_semantic_loss = False
-num_epochs = 30
+use_semantic_loss = True
+num_epochs = 20
 lr = 0.001
 ###########################
 

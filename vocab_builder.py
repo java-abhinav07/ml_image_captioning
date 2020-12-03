@@ -30,7 +30,7 @@ class Vocabulary(object):
 
 def build_vocab(threshold=5):
     counter = Counter()
-    with open("./data/flickr8k/captions.txt") as f:
+    with open("./data/flickr30k_images/captions.txt") as f:
         l = f.readlines()
         for item in l:
             caption = str(item.split(",")[1])
@@ -52,5 +52,5 @@ def build_vocab(threshold=5):
 
 
 vocab = build_vocab()
-with open("./data/vocab.pkl", "wb") as f:
+with open("./data/flickr30k_images/vocab.pkl", "wb") as f:
     pickle.dump(vocab, f)
